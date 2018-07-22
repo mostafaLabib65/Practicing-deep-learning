@@ -54,6 +54,7 @@ def train_neural_network(x,y):
     epochs = 6
 
     with tf.Session() as sess:
+        costs = [0] * 6
         sess.run(tf.initialize_all_variables())
         saver = tf.train.Saver()
         for epoch in range(epochs):
@@ -62,19 +63,21 @@ def train_neural_network(x,y):
                 epoch_x, epoch_y = mnist.train.next_batch(batch_size)
                 _, c = sess.run([optimizor, cost], feed_dict={x: epoch_x, y: epoch_y})
                 epoch_loss += c
-            print('Epoch ', epoch, 'completed out of', epochs, 'loss ', epoch_loss)
+                costs[epoch] = epoch_loss
+            print('Epoch ', epoch+1, 'completed out of', epochs, 'loss ', epoch_loss)
         correct = tf.equal(tf.argmax(pridection, 1), tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
         print('Accuracy: ', accuracy.eval({x:mnist.test.images, y: mnist.test.labels}))
-
-
+        plt.plot([1, 2, 3, 4, 5, 6], costs)
+        plt.show()
         test_x = mnist.test.images
         p = tf.argmax(pridection, 1)
         p = tf.cast(p, 'float')
         p = p.eval({x: test_x})
         while True:
             n = np.random.randint(0, p.shape[0])
-            print('Model Prediction:', p[n])
+            print('Model Prediction: ', p[n], '\n')
+            print('---------------------\n')
             gen_image(test_x[n]).show()
 
 
