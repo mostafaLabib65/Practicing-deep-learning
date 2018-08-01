@@ -8,7 +8,7 @@ mnist = input_data.read_data_sets("tmp/data", one_hot = True)
 n_classes = 10
 batch_size = 1000
 
-x = tf.placeholder('float',[None, 784])
+x = tf.placeholder('float', [None, 784])
 y = tf.placeholder('float')
 
 
@@ -41,7 +41,6 @@ def cnn_model(data):
 
     fc = tf.reshape(conv2, [-1, 7*7*64])
     fc = tf.nn.relu(tf.matmul(fc, weights['W_fc']) + biases['b_fc'])
-
     output = tf.matmul(fc, weights['out']) + biases['out']
     return output
 
